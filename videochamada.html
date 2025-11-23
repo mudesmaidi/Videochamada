@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat sobre vídeo</title>
+
+    <!-- Meta Pixel Code -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '1032225729043782');
+      fbq('track', 'PageView');
+    </script>
+    <noscript>
+      <img height="1" width="1" style="display:none"
+      src="https://www.facebook.com/tr?id=1032225729043782&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Meta Pixel Code -->
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html { height: 100%; font-family: Arial, sans-serif; }
+        .video-background { position: relative; height: 100%; width: 100%; overflow: hidden; }
+        .video-background video {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover; object-position: center; z-index: -1;
+        }
+        .avatar-container { position: absolute; top: 10px; left: 10px; display: flex; align-items: center; }
+        .avatar-container img {
+            width: 50px; height: 50px; border-radius: 50%;
+            border: 2px solid white;
+        }
+        .live-badge {
+            position: absolute; top: 10px; right: 10px;
+            background-color: red; color: white;
+            font-size: 14px; font-weight: bold;
+            padding: 5px 10px; border-radius: 20px;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 5px red; }
+            50% { box-shadow: 0 0 20px red; }
+            100% { box-shadow: 0 0 5px red; }
+        }
+    </style>
+</head>
+<body>
+    <div class="video-background">
+        <video id="callVideo" autoplay muted playsinline>
+            <source src="https://s3-cf.zapsafe.work/mude/videochamada.mp4">
+            Seu navegador não suporta o vídeo.
+        </video>
+
+        <div class="avatar-container">
+            <img src="fotoperfil.jpg" alt="Avatar de perfil">
+        </div>
+
+        <div class="live-badge">Ao Vivo</div>
+    </div>
+
+    <script>
+        const callVideo = document.getElementById('callVideo');
+
+        // Marca um evento de PageView ao carregar e Purchase ao terminar o vídeo
+        fbq('track', 'PageView');
+
+        callVideo.addEventListener('ended', () => {
+            fbq('track', 'Purchase');
+            window.location.href = "index.html";
+        });
+    </script>
+</body>
+</html>
