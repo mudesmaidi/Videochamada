@@ -1,81 +1,85 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat sobre vídeo</title>
+    <title>Chamada de Vídeo Exclusiva</title>
 
     <!-- Meta Pixel Code -->
     <script>
-      !function(f,b,e,v,n,t,s)
-      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window, document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', '1032225729043782');
-      fbq('track', 'PageView');
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+
+        fbq('init', '1032225729043782');
+        fbq('track', 'PageView');
+        fbq('track', 'ViewContent');
+        fbq('trackCustom', 'AssistiuChamada');
     </script>
-    <noscript>
-      <img height="1" width="1" style="display:none"
-      src="https://www.facebook.com/tr?id=1032225729043782&ev=PageView&noscript=1"/>
-    </noscript>
-    <!-- End Meta Pixel Code -->
+    <!-- End Meta Pixel -->
 
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body, html { height: 100%; font-family: Arial, sans-serif; }
-        .video-background { position: relative; height: 100%; width: 100%; overflow: hidden; }
-        .video-background video {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%;
-            object-fit: cover; object-position: center; z-index: -1;
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
-        .avatar-container { position: absolute; top: 10px; left: 10px; display: flex; align-items: center; }
-        .avatar-container img {
-            width: 50px; height: 50px; border-radius: 50%;
-            border: 2px solid white;
+
+        video {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 10px;
         }
-        .live-badge {
-            position: absolute; top: 10px; right: 10px;
-            background-color: red; color: white;
-            font-size: 14px; font-weight: bold;
-            padding: 5px 10px; border-radius: 20px;
-            animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse {
-            0% { box-shadow: 0 0 5px red; }
-            50% { box-shadow: 0 0 20px red; }
-            100% { box-shadow: 0 0 5px red; }
+
+        #message {
+            color: white;
+            font-size: 22px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="video-background">
-        <video id="callVideo" autoplay muted playsinline>
-            <source src="https://s3-cf.zapsafe.work/mude/videochamada.mp4">
-            Seu navegador não suporta o vídeo.
+
+    <div id="content">
+        <video id="callVideo" autoplay playsinline controls>
+            <source src="https://s3-cf.zapsafe.work/guisantos/videochamada.mp4" type="video/mp4">
         </video>
-
-        <div class="avatar-container">
-            <img src="fotoperfil.jpg" alt="Avatar de perfil">
-        </div>
-
-        <div class="live-badge">Ao Vivo</div>
+        <p id="message"></p>
     </div>
 
-    <script>
-        const callVideo = document.getElementById('callVideo');
+<script>
+    const callVideo = document.getElementById("callVideo");
+    const message = document.getElementById("message");
 
-        // Marca um evento de PageView ao carregar e Purchase ao terminar o vídeo
-        fbq('track', 'PageView');
+    // Se já assistiu uma vez, não deixa assistir de novo
+    if (localStorage.getItem("video_chamada_assistida")) {
 
-        callVideo.addEventListener('ended', () => {
-            fbq('track', 'Purchase');
-            window.location.href = "index.html";
+        callVideo.style.display = "none";
+        message.style.display = "block";
+        message.textContent = "A sua chamada já foi realizada.";
+
+    } else {
+
+        // Marca que assistiu
+        localStorage.setItem("video_chamada_assistida", "1");
+
+        // Quando terminar → redireciona
+        callVideo.addEventListener("ended", () => {
+            window.location.href = "index.html"; 
         });
-    </script>
+    }
+</script>
+
 </body>
 </html>
