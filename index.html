@@ -7,142 +7,105 @@
 
     <!-- Meta Pixel Code -->
     <script>
-      !function(f,b,e,v,n,t,s)
-      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window, document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', '1032225729043782');
-      fbq('track', 'PageView');
-    </script>
-    <noscript>
-      <img height="1" width="1" style="display:none"
-      src="https://www.facebook.com/tr?id=1032225729043782&ev=PageView&noscript=1"/>
-    </noscript>
-    <!-- End Meta Pixel Code -->
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
 
+        fbq('init', '1032225729043782');
+        fbq('track', 'PageView');
+        fbq('track', 'ViewContent');
+        fbq('trackCustom','EntrouChamadaDeVideo');
+    </script>
+    <!-- End Meta Pixel -->
+    
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(135deg, #4e54c8, #8f94fb);
-            color: #fff;
+            text-align: center;
         }
         .container {
-            text-align: center;
-            background: #ffffff;
-            color: #333;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            width: 90%;
-            max-width: 400px;
+            margin-top: 50px;
         }
-        .container h1 { font-size: 24px; margin-bottom: 15px; }
-        .container p { font-size: 18px; margin-bottom: 20px; }
-        .container img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            margin-bottom: 15px;
-        }
-        .button {
-            background-color: #4e54c8;
-            color: #fff;
-            font-size: 16px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-        }
-        .button:hover { background-color: #6f73ef; }
-        .loading {
+        #startButton {
+            padding: 15px 30px;
             font-size: 18px;
-            margin-top: 20px;
-            animation: fadeIn 1s ease-in-out;
+            color: #fff;
+            background-color: #28a745;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
         }
-        .message {
+        #startButton:disabled {
+            background-color: #888;
+            cursor: not-allowed;
+        }
+        #message {
             font-size: 20px;
-            color: #333;
-            font-weight: bold;
+            margin-top: 30px;
         }
-        @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
     </style>
 </head>
 <body>
-    <div class="container" id="content">
-        <img src="fotoperfil.jpg" alt="Foto de perfil">
+
+    <div class="container">
+        <h1>Chamada de Vídeo Exclusiva</h1>
+        <p>Você tem acesso a uma chamada única.</p>
+        <button id="startButton">Entrar na chamada</button>
+        <p id="message"></p>
     </div>
 
-    <script>
-        const content = document.getElementById('content');
-        
-        // Usa variável em memória ao invés de localStorage
-        let videoCallState = {
-            accessed: false
-        };
+<script>
+    const startButton = document.getElementById("startButton");
+    const message = document.getElementById("message");
 
-        // Verifica se já foi acessado (simulação simples)
-        const urlParams = new URLSearchParams(window.location.search);
-        const wasAccessed = urlParams.get('accessed') === 'true';
+    // Se já assistiu uma vez, mostra mensagem e bloqueia
+    if (localStorage.getItem("video_call_watched")) {
+        startButton.disabled = true;
+        message.textContent = "A sua chamada já foi realizada.";
+    }
 
-        if (wasAccessed) {
-            content.innerHTML += `<div class="message">Essa chamada de vídeo já terminou...</div>`;
-        } else {
-            videoCallState.accessed = true;
-            content.innerHTML += `
-                <h1>Geovana convidou você para uma chamada de vídeo ao vivo...</h1>
-                <p>Clique no botão abaixo para aceitar o convite 👇</p>
-                <button class="button" id="joinButton">Participar agora</button>
-            `;
+    startButton.addEventListener("click", () => {
 
-            const joinButton = document.getElementById('joinButton');
-            joinButton.addEventListener('click', () => {
-                // Dispara o evento de Purchase apenas uma vez
-                if (typeof fbq !== 'undefined') {
-                    fbq('track', 'Purchase', {
-                        value: 1.00,
-                        currency: 'BRL',
-                        content_name: 'Chamada_Video_Geovana',
-                        content_category: 'Video_Chamada'
-                    });
-                }
-                startLoadingSequence();
+        // TRACK de clique (intenção forte)
+        fbq('trackCustom', 'ClickChamadaDeVideo', {
+            eventID: "click_video_call_" + Date.now()
+        });
+
+        // PURCHASE REAL — com proteção contra duplicação
+        if (!localStorage.getItem("video_call_purchase_done")) {
+
+            fbq('track', 'Purchase', {
+                value: 1.00,
+                currency: 'BRL',
+                content_name: 'Chamada_de_Video',
+                eventID: 'purchase_call_' + Date.now()
             });
+
+            localStorage.setItem("video_call_purchase_done", "1");
         }
 
-        function startLoadingSequence() {
-            const messages = [
-                "Confirmando conexão...",
-                "Geovana está online agora...",
-                "Entrando na sala ao vivo..."
-            ];
-            let index = 0;
+        // Marca como assistido para nunca repetir
+        localStorage.setItem("video_call_watched", "1");
 
-            content.innerHTML = `<div class="loading">${messages[index]}</div>`;
-            const loadingElement = content.querySelector('.loading');
+        // Mostra mensagem
+        message.textContent = "Chamada iniciando...";
+        
+        // Simula carregamento…
+        setTimeout(() => {
+            startButton.disabled = true;
+            message.textContent = "A sua chamada já foi realizada.";
+        }, 3000);
 
-            const interval = setInterval(() => {
-                index++;
-                if (index < messages.length) {
-                    loadingElement.textContent = messages[index];
-                } else {
-                    clearInterval(interval);
-                    // Adiciona parâmetro para indicar que foi acessado
-                    window.location.href = "videochamada.html?accessed=true";
-                }
-            }, 1500);
-        }
-    </script>
+    });
+</script>
+
 </body>
 </html>
