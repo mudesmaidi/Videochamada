@@ -1,7 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chamada de Vídeo</title>
+
+<!-- PIXEL -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}
+(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
+
+fbq('init', '1245756120497473');
+fbq('track', 'PageView');
+</script>
+
+<noscript>
+<img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1245756120497473&ev=PageView&noscript=1"/>
+</noscript>
+
+<style>
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 20px;
+    padding: 0;
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -10,45 +38,35 @@ body {
     color: #fff;
 }
 
-/* CENTRALIZA TUDO DE VERDADE */
+/* CARD CENTRAL */
 .container {
     text-align: center;
-    background: #ffffff;
+    background: #fff;
     color: #333;
     padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    width: 95%;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    width: 92%;
     max-width: 420px;
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
 }
 
-/* VÍDEO NUNCA MAIS FICA “FULL SCREEN” */
-video {
-    width: 100%;
-    max-width: 400px;
-    max-height: 65vh;
-    border-radius: 10px;
-    background: black;
-}
-
-/* BOTÃO CENTRALIZADO */
+/* BOTÃO */
 .button {
-    background-color: #4e54c8;
+    background: #4e54c8;
     color: #fff;
     font-size: 16px;
     padding: 10px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
     margin-top: 15px;
 }
 
-/* TEXTO BONITO */
+/* TEXTO */
 .container h1 {
     font-size: 20px;
     margin-bottom: 10px;
@@ -59,8 +77,128 @@ video {
     margin-bottom: 15px;
 }
 
-/* LOADING CENTRAL */
+/* LOADING */
 .loading {
     font-size: 18px;
-    text-align: center;
 }
+
+/* 🔥 MODAL CORRIGIDO (SEM FULL SCREEN BUGADO) */
+#videoModal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,0.85);
+    padding: 20px;
+}
+
+/* ativa modal */
+#videoModal.active {
+    display: flex;
+}
+
+/* VÍDEO CONTROLADO */
+#videoModal video {
+    width: 100%;
+    max-width: 420px;
+    max-height: 70vh;
+    border-radius: 10px;
+    background: black;
+}
+
+/* FECHAR */
+.close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 28px;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="content"></div>
+
+<!-- MODAL -->
+<div id="videoModal">
+    <div class="close" onclick="closeVideo()">×</div>
+    <video id="videoPlayer" controls playsinline></video>
+</div>
+
+<script>
+
+const content = document.getElementById('content');
+const modal = document.getElementById('videoModal');
+const video = document.getElementById('videoPlayer');
+
+if (localStorage.getItem('videoCallAccessed')) {
+    content.innerHTML = `<div>Essa chamada de vídeo já terminou...</div>`;
+} else {
+    localStorage.setItem('videoCallAccessed', 'true');
+
+    content.innerHTML = `
+        <h1>Geovana convidou você para uma chamada de vídeo ao vivo...</h1>
+        <p>Clique para entrar 👇</p>
+        <button class="button" id="join">Participar agora</button>
+    `;
+
+    document.getElementById('join').onclick = () => {
+
+        if (!localStorage.getItem('purchase_sent')) {
+            fbq('track', 'Purchase', {
+                currency: 'BRL',
+                value: 1.00,
+                content_name: 'Video_Call_Acesso',
+                content_category: 'Conteudo_Exclusivo'
+            });
+            localStorage.setItem('purchase_sent', 'true');
+        }
+
+        startLoading();
+    };
+}
+
+function startLoading() {
+    const msgs = [
+        "Confirmando conexão...",
+        "Geovana está online...",
+        "Entrando na sala..."
+    ];
+
+    let i = 0;
+    content.innerHTML = `<div class="loading">${msgs[i]}</div>`;
+
+    const el = content.querySelector('.loading');
+
+    const interval = setInterval(() => {
+        i++;
+        if (i < msgs.length) {
+            el.textContent = msgs[i];
+        } else {
+            clearInterval(interval);
+            openVideo();
+        }
+    }, 1500);
+}
+
+function openVideo() {
+    modal.classList.add('active');
+    video.src = "videochamada.html"; // mantém seu redirect ou vídeo
+    video.load();
+    video.play().catch(()=>{});
+}
+
+function closeVideo() {
+    modal.classList.remove('active');
+    video.pause();
+    video.removeAttribute('src');
+    video.load();
+}
+
+</script>
+
+</body>
+</html>
