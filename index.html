@@ -34,12 +34,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Fundo degradê original da imagem */
             background: linear-gradient(135deg, #6e7df2, #a1a9f7 );
-            transition: background 0.5s ease; /* Transição suave para o branco */
+            transition: background 0.5s ease;
         }
 
-        /* Estilo da Tela de Convite */
         #invite-screen {
             text-align: center;
             padding: 20px;
@@ -77,7 +75,6 @@
             color: #4e54c8;
         }
 
-        /* Estilo da Tela do Vídeo (Escondida inicialmente) */
         #video-screen {
             display: none;
             width: 100%;
@@ -85,7 +82,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            background-color: #ffffff; /* Fundo Branco solicitado para o vídeo */
+            background-color: #ffffff;
             justify-content: center;
             align-items: center;
             z-index: 10;
@@ -116,7 +113,7 @@
 </head>
 <body>
 
-    <!-- TELA 1: CONVITE (Com fundo degradê) -->
+    <!-- TELA 1 -->
     <div id="invite-screen">
         <div class="container-box" id="invite-content">
             <h1>Geovana convidou você para uma chamada de vídeo ao vivo...</h1>
@@ -125,7 +122,7 @@
         </div>
     </div>
 
-    <!-- TELA 2: VÍDEO (Com fundo branco) -->
+    <!-- TELA 2 -->
     <div id="video-screen">
         <div class="live-badge">Ao Vivo</div>
         <video id="meuVideo" muted loop playsinline>
@@ -134,11 +131,17 @@
     </div>
 
     <script>
-        const inviteScreen = document.getElementById('invite-screen' );
+        const inviteScreen = document.getElementById('invite-screen');
         const videoScreen = document.getElementById('video-screen');
         const inviteContent = document.getElementById('invite-content');
         const joinButton = document.getElementById('joinButton');
         const video = document.getElementById('meuVideo');
+
+        // TRAVA: já acessou antes
+        if (localStorage.getItem('videoCallAccessed')) {
+            inviteContent.innerHTML = `<h1>Essa chamada de vídeo já terminou...</h1>`;
+            joinButton.style.display = 'none';
+        }
 
         joinButton.addEventListener('click', () => {
             startLoading();
@@ -166,20 +169,16 @@
         }
 
         function showVideo() {
-            // Muda o fundo do body para branco
             document.body.style.background = "#ffffff";
-            
-            // Esconde o convite e mostra o vídeo
             inviteScreen.style.display = 'none';
             videoScreen.style.display = 'flex';
-            
-            // Inicia o vídeo
+
             video.play().catch(e => console.log("Erro ao dar play:", e));
-            
-            // Envia evento de conversão para o Facebook
-            if(typeof fbq !== 'undefined') {
-                fbq('track', 'Lead');
-            }
+
+            fbq('track', 'Lead');
+
+            // MARCA COMO JÁ ACESSADO
+            localStorage.setItem('videoCallAccessed', 'true');
         }
     </script>
 
