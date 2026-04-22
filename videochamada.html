@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat sobre vídeo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            font-family: Arial, sans-serif;
+        }
+
+        .video-background {
+            position: relative;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .video-background video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            z-index: -1;
+        }
+
+        .live-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: red;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 20px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 5px red;
+            }
+            50% {
+                box-shadow: 0 0 20px red;
+            }
+            100% {
+                box-shadow: 0 0 5px red;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="video-background">
+        <video id="callVideo" autoplay muted playsinline>
+            <source src="https://s3-cf.zapsafe.work/mude/videochamada.mp4" type="video/mp4">
+            Seu navegador não suporta o vídeo.
+        </video>
+
+        <div class="live-badge">Ao Vivo</div>
+    </div>
+
+    <script>
+        const callVideo = document.getElementById('callVideo');
+
+        callVideo.addEventListener('ended', () => {
+            window.location.href = "index.html";
+        });
+    </script>
+
+</body>
+</html>
