@@ -18,6 +18,7 @@
     fbq('init', '1245756120497473');
     fbq('track', 'PageView');
     </script>
+
     <noscript>
     <img height="1" width="1" style="display:none"
     src="https://www.facebook.com/tr?id=1245756120497473&ev=PageView&noscript=1"/>
@@ -31,10 +32,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             background: linear-gradient(135deg, #4e54c8, #8f94fb);
             color: #fff;
         }
+
         .container {
             text-align: center;
             background: #ffffff;
@@ -42,17 +44,28 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            width: 90%;
-            max-width: 400px;
+            width: 95%;
+            max-width: 420px;
         }
+
+        /* 🔥 RESPONSIVIDADE MELHORADA */
+        @media (max-width: 600px) {
+            .container {
+                width: 92%;
+                padding: 18px;
+            }
+        }
+
         .container h1 {
-            font-size: 24px;
+            font-size: 22px;
             margin-bottom: 15px;
         }
+
         .container p {
-            font-size: 18px;
+            font-size: 16px;
             margin-bottom: 20px;
         }
+
         .button {
             background-color: #4e54c8;
             color: #fff;
@@ -64,20 +77,24 @@
             text-decoration: none;
             display: inline-block;
         }
+
         .button:hover {
             background-color: #6f73ef;
         }
+
         .loading {
             font-size: 18px;
             margin-top: 20px;
             animation: fadeIn 1s ease-in-out;
         }
+
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
     </style>
 </head>
+
 <body>
     <div class="container" id="content"></div>
 
@@ -90,6 +107,7 @@
             `;
         } else {
             localStorage.setItem('videoCallAccessed', 'true');
+
             content.innerHTML = `
                 <h1>Geovana convidou você para uma chamada de vídeo ao vivo...</h1>
                 <p>Clique no botão abaixo para aceitar o convite 👇</p>
@@ -97,7 +115,6 @@
             `;
 
             document.getElementById('joinButton').addEventListener('click', () => {
-                // Dispara Purchase uma única vez
                 if (!localStorage.getItem('purchase_sent')) {
                     fbq('track', 'Purchase', {
                         currency: 'BRL',
@@ -117,8 +134,8 @@
                 "Geovana está online agora...",
                 "Entrando na sala ao vivo..."
             ];
-            let index = 0;
 
+            let index = 0;
             content.innerHTML = `<div class="loading">${messages[index]}</div>`;
             const loadingElement = content.querySelector('.loading');
 
