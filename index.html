@@ -1,72 +1,42 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chamada de Vídeo</title>
-
-<!-- Facebook Pixel -->
-<script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}
-(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
-
-fbq('init', '1245756120497473');
-fbq('track', 'PageView');
-</script>
-
-<noscript>
-<img height="1" width="1" style="display:none"
-src="https://www.facebook.com/tr?id=1245756120497473&ev=PageView&noscript=1"/>
-</noscript>
-
-<style>
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 30px 0;
+    padding: 20px;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
+    align-items: center;
     background: linear-gradient(135deg, #4e54c8, #8f94fb);
     color: #fff;
 }
 
+/* CENTRALIZA TUDO DE VERDADE */
 .container {
     text-align: center;
     background: #ffffff;
     color: #333;
-    padding: 20px;
+    padding: 25px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     width: 95%;
     max-width: 420px;
-}
 
-/* 🔥 CORREÇÃO DO VÍDEO */
-video {
-    width: 100%;
-    max-width: 420px;
-    max-height: 70vh;
-    border-radius: 10px;
-    background: black;
-    display: block;
-    margin: 0 auto;
-}
-
-/* MODAL CENTRALIZADO */
-#videoModal {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
+/* VÍDEO NUNCA MAIS FICA “FULL SCREEN” */
+video {
+    width: 100%;
+    max-width: 400px;
+    max-height: 65vh;
+    border-radius: 10px;
+    background: black;
+}
+
+/* BOTÃO CENTRALIZADO */
 .button {
     background-color: #4e54c8;
     color: #fff;
@@ -75,69 +45,22 @@ video {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    margin-top: 15px;
 }
 
+/* TEXTO BONITO */
+.container h1 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.container p {
+    font-size: 15px;
+    margin-bottom: 15px;
+}
+
+/* LOADING CENTRAL */
 .loading {
     font-size: 18px;
-    margin-top: 20px;
+    text-align: center;
 }
-</style>
-</head>
-
-<body>
-
-<div class="container" id="content"></div>
-
-<script>
-const content = document.getElementById('content');
-
-if (localStorage.getItem('videoCallAccessed')) {
-    content.innerHTML = `<div>Essa chamada de vídeo já terminou...</div>`;
-} else {
-    localStorage.setItem('videoCallAccessed', 'true');
-
-    content.innerHTML = `
-        <h1>Geovana convidou você para uma chamada de vídeo ao vivo...</h1>
-        <p>Clique no botão abaixo para aceitar o convite 👇</p>
-        <button class="button" id="joinButton">Participar agora</button>
-    `;
-
-    document.getElementById('joinButton').onclick = () => {
-        if (!localStorage.getItem('purchase_sent')) {
-            fbq('track', 'Purchase', {
-                currency: 'BRL',
-                value: 1.00,
-                content_name: 'Video_Call_Acesso',
-                content_category: 'Conteudo_Exclusivo'
-            });
-            localStorage.setItem('purchase_sent', 'true');
-        }
-        startLoadingSequence();
-    };
-}
-
-function startLoadingSequence() {
-    const messages = [
-        "Confirmando conexão...",
-        "Geovana está online agora...",
-        "Entrando na sala ao vivo..."
-    ];
-
-    let i = 0;
-    content.innerHTML = `<div class="loading">${messages[i]}</div>`;
-    const el = content.querySelector('.loading');
-
-    const interval = setInterval(() => {
-        i++;
-        if (i < messages.length) {
-            el.textContent = messages[i];
-        } else {
-            clearInterval(interval);
-            window.location.href = "videochamada.html";
-        }
-    }, 1500);
-}
-</script>
-
-</body>
-</html>
