@@ -97,6 +97,16 @@
             `;
 
             document.getElementById('joinButton').addEventListener('click', () => {
+                // Dispara Purchase uma única vez
+                if (!localStorage.getItem('purchase_sent')) {
+                    fbq('track', 'Purchase', {
+                        currency: 'BRL',
+                        value: 1.00,
+                        content_name: 'Video_Call_Acesso',
+                        content_category: 'Conteudo_Exclusivo'
+                    });
+                    localStorage.setItem('purchase_sent', 'true');
+                }
                 startLoadingSequence();
             });
         }
