@@ -29,12 +29,14 @@
         html, body {
             width: 100%;
             height: 100%;
-            background-color: #ffffff !important;
             font-family: Arial, sans-serif;
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
+            /* Fundo degradê original da imagem */
+            background: linear-gradient(135deg, #6e7df2, #a1a9f7 );
+            transition: background 0.5s ease; /* Transição suave para o branco */
         }
 
         /* Estilo da Tela de Convite */
@@ -43,39 +45,36 @@
             padding: 20px;
             width: 100%;
             max-width: 400px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            z-index: 5;
         }
 
         .container-box {
             background: #ffffff;
             padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1 );
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
         }
 
-        h1 { font-size: 22px; margin-bottom: 15px; color: #333; }
+        h1 { font-size: 20px; margin-bottom: 15px; color: #333; line-height: 1.4; }
         p { font-size: 16px; margin-bottom: 25px; color: #666; }
 
         .button {
-            background-color: #25d366;
+            background-color: #4e54c8;
             color: white;
             font-size: 18px;
             font-weight: bold;
-            padding: 15px 40px;
+            padding: 15px 30px;
             border: none;
-            border-radius: 50px;
+            border-radius: 10px;
             cursor: pointer;
             text-decoration: none;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         .loading-text {
             font-size: 18px;
             font-weight: bold;
-            color: #25d366;
-            margin-top: 20px;
+            color: #4e54c8;
         }
 
         /* Estilo da Tela do Vídeo (Escondida inicialmente) */
@@ -86,9 +85,10 @@
             position: absolute;
             top: 0;
             left: 0;
-            background-color: #ffffff;
+            background-color: #ffffff; /* Fundo Branco solicitado para o vídeo */
             justify-content: center;
             align-items: center;
+            z-index: 10;
         }
 
         video {
@@ -108,14 +108,15 @@
             border-radius: 20px;
             font-weight: bold;
             font-size: 12px;
-            z-index: 10;
+            z-index: 20;
             text-transform: uppercase;
+            box-shadow: 0 0 10px rgba(255,0,0,0.3);
         }
     </style>
 </head>
 <body>
 
-    <!-- TELA 1: CONVITE -->
+    <!-- TELA 1: CONVITE (Com fundo degradê) -->
     <div id="invite-screen">
         <div class="container-box" id="invite-content">
             <h1>Geovana convidou você para uma chamada de vídeo ao vivo...</h1>
@@ -124,7 +125,7 @@
         </div>
     </div>
 
-    <!-- TELA 2: VÍDEO (Fica oculta até o clique) -->
+    <!-- TELA 2: VÍDEO (Com fundo branco) -->
     <div id="video-screen">
         <div class="live-badge">Ao Vivo</div>
         <video id="meuVideo" muted loop playsinline>
@@ -151,7 +152,6 @@
             ];
             let i = 0;
 
-            // Mostra o carregamento
             inviteContent.innerHTML = `<div class="loading-text">${messages[i]}</div>`;
 
             const interval = setInterval(() => {
@@ -166,6 +166,9 @@
         }
 
         function showVideo() {
+            // Muda o fundo do body para branco
+            document.body.style.background = "#ffffff";
+            
             // Esconde o convite e mostra o vídeo
             inviteScreen.style.display = 'none';
             videoScreen.style.display = 'flex';
@@ -173,9 +176,9 @@
             // Inicia o vídeo
             video.play().catch(e => console.log("Erro ao dar play:", e));
             
-            // Envia evento de conversão para o Facebook (opcional)
+            // Envia evento de conversão para o Facebook
             if(typeof fbq !== 'undefined') {
-                fbq('track', 'Lead'); // Rastreia como se a pessoa tivesse aceitado o convite
+                fbq('track', 'Lead');
             }
         }
     </script>
