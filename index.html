@@ -5,141 +5,201 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chamada de Vídeo</title>
 
-    <!-- Facebook Pixel Code -->
+    <!-- Facebook Pixel -->
     <script>
     !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js' );
-    fbq('init', '1245756120497473'); 
+    {
+        if(f.fbq)return;
+
+        n=f.fbq=function(){
+            n.callMethod ?
+            n.callMethod.apply(n,arguments) : n.queue.push(arguments)
+        };
+
+        if(!f._fbq)f._fbq=n;
+
+        n.push=n;
+        n.loaded=!0;
+        n.version='2.0';
+        n.queue=[];
+
+        t=b.createElement(e);
+        t.async=!0;
+        t.src=v;
+
+        s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)
+
+    }(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+
+    fbq('init', '1245756120497473');
+
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=1245756120497473&ev=PageView&noscript=1"
-    /></noscript>
-    <!-- End Facebook Pixel Code -->
+
+    <noscript>
+        <img height="1" width="1" style="display:none"
+        src="https://www.facebook.com/tr?id=1245756120497473&ev=PageView&noscript=1"/>
+    </noscript>
 
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        html, body {
-            width: 100%;
-            height: 100%;
-            font-family: Arial, sans-serif;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #6e7df2, #a1a9f7 );
-            transition: background 0.5s ease;
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
         }
 
-        #invite-screen {
-            text-align: center;
-            padding: 20px;
-            width: 100%;
-            max-width: 400px;
-            z-index: 5;
+        html, body{
+            width:100%;
+            height:100%;
+            font-family:Arial,sans-serif;
+            overflow:hidden;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background:linear-gradient(135deg,#6e7df2,#a1a9f7);
+            transition:background .5s ease;
         }
 
-        .container-box {
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        #invite-screen{
+            text-align:center;
+            padding:20px;
+            width:100%;
+            max-width:400px;
+            z-index:5;
         }
 
-        h1 { font-size: 20px; margin-bottom: 15px; color: #333; line-height: 1.4; }
-        p { font-size: 16px; margin-bottom: 25px; color: #666; }
-
-        .button {
-            background-color: #4e54c8;
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            text-decoration: none;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        .container-box{
+            background:#ffffff;
+            padding:30px;
+            border-radius:15px;
+            box-shadow:0 10px 30px rgba(0,0,0,.15);
         }
 
-        .loading-text {
-            font-size: 18px;
-            font-weight: bold;
-            color: #4e54c8;
+        h1{
+            font-size:20px;
+            margin-bottom:15px;
+            color:#333;
+            line-height:1.4;
         }
 
-        #video-screen {
-            display: none;
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            background-color: #ffffff;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
+        p{
+            font-size:16px;
+            margin-bottom:25px;
+            color:#666;
         }
 
-        video {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            background-color: #ffffff;
+        .button{
+            background-color:#4e54c8;
+            color:white;
+            font-size:18px;
+            font-weight:bold;
+            padding:15px 30px;
+            border:none;
+            border-radius:10px;
+            cursor:pointer;
+            box-shadow:0 4px 15px rgba(0,0,0,.1);
         }
 
-        .live-badge {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: #ff0000;
-            color: white;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 12px;
-            z-index: 20;
-            text-transform: uppercase;
-            box-shadow: 0 0 10px rgba(255,0,0,0.3);
+        .loading-text{
+            font-size:18px;
+            font-weight:bold;
+            color:#4e54c8;
+        }
+
+        #video-screen{
+            display:none;
+            width:100%;
+            height:100%;
+            position:absolute;
+            top:0;
+            left:0;
+            background-color:#ffffff;
+            justify-content:center;
+            align-items:center;
+            z-index:10;
+        }
+
+        video{
+            max-width:100%;
+            max-height:100%;
+            object-fit:contain;
+            background-color:#ffffff;
+        }
+
+        .live-badge{
+            position:absolute;
+            top:20px;
+            right:20px;
+            background-color:#ff0000;
+            color:white;
+            padding:6px 14px;
+            border-radius:20px;
+            font-weight:bold;
+            font-size:12px;
+            z-index:20;
+            text-transform:uppercase;
+            box-shadow:0 0 10px rgba(255,0,0,.3);
         }
     </style>
 </head>
+
 <body>
 
-    <!-- TELA 1 -->
+    <!-- TELA INICIAL -->
     <div id="invite-screen">
+
         <div class="container-box" id="invite-content">
-            <h1>Geovana convidou você para uma chamada de vídeo ao vivo...</h1>
-            <p>Clique no botão abaixo para aceitar o convite 👇</p>
-            <button class="button" id="joinButton">Participar agora</button>
+
+            <h1>
+                Geovana convidou você para uma chamada de vídeo ao vivo...
+            </h1>
+
+            <p>
+                Clique no botão abaixo para aceitar o convite 👇
+            </p>
+
+            <button class="button" id="joinButton">
+                Participar agora
+            </button>
+
         </div>
+
     </div>
 
-    <!-- TELA 2 -->
+    <!-- TELA DE VÍDEO -->
     <div id="video-screen">
-        <div class="live-badge">Ao Vivo</div>
+
+        <div class="live-badge">
+            Ao Vivo
+        </div>
+
         <video id="meuVideo" muted loop playsinline>
-            <source src="https://res.cloudinary.com/dhcffmlqh/video/upload/v1773625361/videochamada_mdzzef.mp4" type="video/mp4">
+
+            <source
+            src="https://res.cloudinary.com/dhcffmlqh/video/upload/v1773625361/videochamada_mdzzef.mp4"
+            type="video/mp4">
+
         </video>
+
     </div>
 
     <script>
+
         const inviteScreen = document.getElementById('invite-screen');
         const videoScreen = document.getElementById('video-screen');
         const inviteContent = document.getElementById('invite-content');
         const joinButton = document.getElementById('joinButton');
         const video = document.getElementById('meuVideo');
 
-        // TRAVA: já acessou antes
+        // VERIFICA SE JÁ ACESSOU
         if (localStorage.getItem('videoCallAccessed')) {
-            inviteContent.innerHTML = `<h1>Essa chamada de vídeo já terminou...</h1>`;
+
+            inviteContent.innerHTML = `
+                <h1>Essa chamada de vídeo já terminou...</h1>
+            `;
+
             joinButton.style.display = 'none';
         }
 
@@ -147,39 +207,65 @@
             startLoading();
         });
 
-        function startLoading() {
+        function startLoading(){
+
             const messages = [
                 "Confirmando conexão...",
                 "Geovana está online agora...",
                 "Entrando na sala ao vivo..."
             ];
+
             let i = 0;
 
-            inviteContent.innerHTML = `<div class="loading-text">${messages[i]}</div>`;
+            inviteContent.innerHTML = `
+                <div class="loading-text">${messages[i]}</div>
+            `;
 
             const interval = setInterval(() => {
+
                 i++;
-                if (i < messages.length) {
-                    inviteContent.innerHTML = `<div class="loading-text">${messages[i]}</div>`;
+
+                if(i < messages.length){
+
+                    inviteContent.innerHTML = `
+                        <div class="loading-text">${messages[i]}</div>
+                    `;
+
                 } else {
+
                     clearInterval(interval);
                     showVideo();
                 }
-            }, 1500);
+
+            },1500);
         }
 
-        function showVideo() {
+        function showVideo(){
+
             document.body.style.background = "#ffffff";
+
             inviteScreen.style.display = 'none';
             videoScreen.style.display = 'flex';
 
-            video.play().catch(e => console.log("Erro ao dar play:", e));
+            video.play().catch(e => console.log(e));
 
-            fbq('track', 'Lead');
+            // DISPARA PURCHASE APENAS 1 VEZ
+            if (!localStorage.getItem('purchase_sent')) {
 
-            // MARCA COMO JÁ ACESSADO
+                fbq('track', 'Purchase', {
+                    value: 37.00,
+                    currency: 'BRL',
+                    content_name: 'Videochamada Premium',
+                    content_category: 'Conteudo Exclusivo'
+                });
+
+                localStorage.setItem('purchase_sent', 'true');
+            }
+
+            // BLOQUEIA NOVO ACESSO
             localStorage.setItem('videoCallAccessed', 'true');
         }
+
     </script>
 
 </body>
