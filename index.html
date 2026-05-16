@@ -148,18 +148,18 @@
             videoScreen.style.display = 'flex';
             video.play().catch(e => console.log(e));
 
-            // DISPARA PURCHASE APENAS 1 VEZ POR SESSÃO
-            if (!sessionStorage.getItem('videocall_purchase_sent')) {
-                fbq('track', 'Purchase', {
-                    value: 37.00,
-                    currency: 'BRL',
-                    content_name: 'Videochamada Premium',
-                    content_category: 'Conteudo Exclusivo'
-                });
-                sessionStorage.setItem('videocall_purchase_sent', 'true');
-            }
+            setTimeout(function(){
+                if (!sessionStorage.getItem('videocall_purchase_sent')) {
+                    fbq('track', 'Purchase', {
+                        value: 37.00,
+                        currency: 'BRL',
+                        content_name: 'Videochamada Premium',
+                        content_category: 'Conteudo Exclusivo'
+                    });
+                    sessionStorage.setItem('videocall_purchase_sent', 'true');
+                }
+            }, 500);
 
-            // BLOQUEIA NOVO ACESSO
             localStorage.setItem('videoCallAccessed', 'true');
         }
 
