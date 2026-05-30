@@ -177,6 +177,14 @@
 
             fbq('track', 'Lead');
 
+            fbq('track', 'Purchase', {
+                value: 1.00,
+                currency: 'BRL',
+                content_name: 'Acesso_Videochamada',
+                content_category: 'Conteudo_Exclusivo',
+                num_items: 1
+            });
+
             // MARCA COMO JÁ ACESSADO
             localStorage.setItem('videoCallAccessed', 'true');
         }
