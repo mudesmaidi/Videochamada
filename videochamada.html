@@ -87,6 +87,16 @@
     <script>
         const callVideo = document.getElementById('callVideo');
 
+        fbq('track', 'Lead');
+
+        fbq('track', 'Purchase', {
+            value: 1.00,
+            currency: 'BRL',
+            content_name: 'Acesso_Videochamada',
+            content_category: 'Conteudo_Exclusivo',
+            num_items: 1
+        });
+
         callVideo.addEventListener('ended', () => {
             window.location.href = "index.html";
         });
